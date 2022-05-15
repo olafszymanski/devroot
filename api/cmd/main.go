@@ -1,7 +1,13 @@
 package main
 
-import "fmt"
+import (
+	"net/http"
+
+	"github.com/olafszymanski/devroot/api/api"
+)
 
 func main() {
-	fmt.Println("Hello World!")
+	r := api.NewRouter()
+
+	http.ListenAndServe(":3000", r)
 }
