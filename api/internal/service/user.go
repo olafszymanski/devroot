@@ -1,14 +1,16 @@
 package service
 
 import (
+	"time"
+
 	"github.com/google/uuid"
 	"github.com/olafszymanski/devroot/api/internal/domain/entity"
 	"github.com/olafszymanski/devroot/api/internal/domain/repository"
 )
 
 type IUserService interface {
-	Create(req *entity.UserRequest) (*entity.UserResponse, error)
-	Update(id uuid.UUID, req *entity.UserRequest) (*entity.UserResponse, error)
+	Create(req *entity.UserCreateRequest) (*entity.UserResponse, error)
+	Update(id uuid.UUID, req *entity.UserUpdateRequest) (*entity.UserResponse, error)
 	GetByID(id uuid.UUID) (*entity.UserResponse, error)
 	Delete(id uuid.UUID) error
 }
@@ -21,11 +23,20 @@ func NewUserService(repo *repository.UserRepository) *UserService {
 	return &UserService{repo: repo}
 }
 
-func (u *UserService) Create(req *entity.UserRequest) (*entity.UserResponse, error) {
-	return nil, nil
+func (u *UserService) Create(req *entity.UserCreateRequest) (*entity.UserResponse, error) {
+	return &entity.UserResponse{
+		ID:        uuid.New(),
+		Name:      "test",
+		Username:  "test",
+		Email:     "test",
+		Admin:     false,
+		Image:     "test",
+		Password:  "test",
+		CreatedAt: time.Now(),
+	}, nil
 }
 
-func (u *UserService) Update(id uuid.UUID, req *entity.UserRequest) (*entity.UserResponse, error) {
+func (u *UserService) Update(id uuid.UUID, req *entity.UserUpdateRequest) (*entity.UserResponse, error) {
 	return nil, nil
 }
 
