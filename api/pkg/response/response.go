@@ -1,9 +1,28 @@
 package response
 
-import "encoding/json"
+import (
+	"encoding/json"
+)
 
 type IResponse interface {
 	ToJSON() string
+}
+
+type SuccessResponse struct {
+	Code    int    `json:"code"`
+	Message string `json:"message"`
+}
+
+func NewSuccessResponse(code int, msg string) SuccessResponse {
+	return SuccessResponse{
+		Code:    code,
+		Message: msg,
+	}
+}
+
+func (r SuccessResponse) ToJSON() string {
+	conv, _ := json.Marshal(r)
+	return string(conv)
 }
 
 type ErrorResponse struct {
