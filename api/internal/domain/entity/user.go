@@ -11,16 +11,16 @@ import (
 var validate = validator.New()
 
 type User struct {
-	ID        uuid.UUID  `db:"id"`
-	Name      string     `db:"name"`
-	Username  string     `db:"username"`
-	Email     string     `db:"email"`
-	Password  string     `db:"password"`
-	Admin     bool       `db:"admin"`
-	Image     string     `db:"image"`
-	CreatedAt time.Time  `db:"createdAt"`
-	UpdatedAt *time.Time `db:"updatedAt"`
-	DeletedAt *time.Time `db:"deletedAt"`
+	ID        uuid.UUID `db:"id"`
+	Name      string    `db:"name"`
+	Username  string    `db:"username"`
+	Email     string    `db:"email"`
+	Password  string    `db:"password"`
+	Admin     bool      `db:"admin"`
+	Image     string    `db:"image"`
+	CreatedAt time.Time `db:"createdAt"`
+	UpdatedAt time.Time `db:"updatedAt"`
+	DeletedAt time.Time `db:"deletedAt"`
 }
 
 type UserCreateRequest struct {
@@ -39,6 +39,7 @@ type UserUpdateRequest struct {
 	Username string `json:"username" validate:"max=32"`
 	Email    string `json:"email" validate:"max=64,email"`
 	Password string `json:"password" validate:"max=64"`
+	Image    string `json:"image"`
 }
 
 func (u *UserUpdateRequest) Validate() error {
