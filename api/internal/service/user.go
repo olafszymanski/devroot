@@ -6,6 +6,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/olafszymanski/devroot/api/internal/domain/entity"
 	"github.com/olafszymanski/devroot/api/internal/domain/repository"
+	"github.com/olafszymanski/devroot/api/pkg/hash"
 )
 
 type IUserService interface {
@@ -24,26 +25,96 @@ func NewUserService(repo *repository.UserRepository) *UserService {
 }
 
 func (u *UserService) Create(req *entity.UserCreateRequest) (*entity.UserResponse, error) {
-	return &entity.UserResponse{
+	pwd, err := hash.Hash(req.Password)
+	if err != nil {
+		return nil, err
+	}
+	user, err := u.repo.Create(&entity.User{
 		ID:        uuid.New(),
-		Name:      "test",
-		Username:  "test",
-		Email:     "test",
+		Name:      req.Name,
+		Username:  req.Username,
+		Email:     req.Email,
+		Password:  pwd,
 		Admin:     false,
-		Image:     "test",
-		Password:  "test",
+		Image:     "",
 		CreatedAt: time.Now(),
+		UpdatedAt: time.Time{},
+		DeletedAt: time.Time{},
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return &entity.UserResponse{
+		ID:        user.ID,
+		Name:      user.Name,
+		Username:  user.Username,
+		Email:     user.Email,
+		Admin:     user.Admin,
+		Image:     user.Image,
+		Password:  user.Password,
+		CreatedAt: user.CreatedAt,
 	}, nil
 }
 
 func (u *UserService) Update(id uuid.UUID, req *entity.UserUpdateRequest) (*entity.UserResponse, error) {
-	return nil, nil
+	user, err := u.repo.GetByID(id)
+	if err != nil {
+		return nil, err
+	}
+	if len(req.Name) > 0 {
+		user.Name = req.Name
+	}
+	if len(req.Username) > 0 {
+		user.Username = req.Username
+	}
+	if len(req.Email) > 0 {
+		user.Email = req.Email
+	}
+	if len(req.Password) > 0 {
+		user.Password = req.Password
+	}
+	if len(req.Image) > 0 {
+		user.Image = req.Image
+	}
+	user.UpdatedAt = time.Now()
+
+	updated, err := u.repo.Update(user)
+	if err != nil {
+		return nil, err
+	}
+	return &entity.UserResponse{
+		ID:        updated.ID,
+		Name:      updated.Name,
+		Username:  updated.Username,
+		Email:     updated.Email,
+		Admin:     updated.Admin,
+		Image:     updated.Image,
+		Password:  updated.Password,
+		CreatedAt: updated.CreatedAt,
+	}, nil
 }
 
 func (u *UserService) GetByID(id uuid.UUID) (*entity.UserResponse, error) {
-	return nil, nil
+	user, err := u.repo.GetByID(id)
+	if err != nil {
+		return nil, err
+	}
+	return &entity.UserResponse{
+		ID:        user.ID,
+		Name:      user.Name,
+		Username:  user.Username,
+		Email:     user.Email,
+		Admin:     user.Admin,
+		Image:     user.Image,
+		Password:  user.Password,
+		CreatedAt: user.CreatedAt,
+	}, nil
 }
 
 func (u *UserService) Delete(id uuid.UUID) error {
+	if err := u.repo.Delete(id); err != nil {
+		return err
+	}
 	return nil
 }
