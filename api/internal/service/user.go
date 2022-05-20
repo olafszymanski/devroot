@@ -50,9 +50,9 @@ func (u *UserService) Create(req *entity.UserCreateRequest) (*entity.UserRespons
 		Name:      user.Name,
 		Username:  user.Username,
 		Email:     user.Email,
+		Password:  user.Password,
 		Admin:     user.Admin,
 		Image:     user.Image,
-		Password:  user.Password,
 		CreatedAt: user.CreatedAt,
 	}, nil
 }
@@ -72,7 +72,11 @@ func (u *UserService) Update(id uuid.UUID, req *entity.UserUpdateRequest) (*enti
 		user.Email = req.Email
 	}
 	if len(req.Password) > 0 {
-		user.Password = req.Password
+		pwd, err := hash.Hash(req.Password)
+		if err != nil {
+			return nil, err
+		}
+		user.Password = pwd
 	}
 	if len(req.Image) > 0 {
 		user.Image = req.Image
@@ -88,9 +92,9 @@ func (u *UserService) Update(id uuid.UUID, req *entity.UserUpdateRequest) (*enti
 		Name:      updated.Name,
 		Username:  updated.Username,
 		Email:     updated.Email,
+		Password:  updated.Password,
 		Admin:     updated.Admin,
 		Image:     updated.Image,
-		Password:  updated.Password,
 		CreatedAt: updated.CreatedAt,
 	}, nil
 }
@@ -105,9 +109,9 @@ func (u *UserService) GetByID(id uuid.UUID) (*entity.UserResponse, error) {
 		Name:      user.Name,
 		Username:  user.Username,
 		Email:     user.Email,
+		Password:  user.Password,
 		Admin:     user.Admin,
 		Image:     user.Image,
-		Password:  user.Password,
 		CreatedAt: user.CreatedAt,
 	}, nil
 }
