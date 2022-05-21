@@ -1,0 +1,56 @@
+.wrapper {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.container {
+  max-width: 768px;
+  width: 100%;
+  margin: 1rem;
+}
+
+.image {
+  width: 60%;
+}
+
+.title {
+  font-family: Ubuntu, cursive;
+  font-size: clamp(3rem, 12vw, 6rem);
+  margin-bottom: 1rem;
+}
+
+.infoText {
+  font-size: clamp(0.8rem, 2vw, 1.5rem);
+  font-weight: 300;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+}
+
+.comingSoon {
+  font-size: clamp(0.8rem, 2.5vw, 1.5rem);
+  font-weight: 300;
+}
+
+.icon {
+  font-size: 1.5rem;
+  vertical-align: middle;
+}
+
+.callToAction {
+  display: inline-block;
+  font-size: clamp(1rem, 3vw, 2rem);
+  margin: 1rem;
+  padding: 0.8em 1.6em;
+  line-height: 24px;
+  border-radius: 10px;
+  transition: all 0.2s;
+}
+
+.callToAction:hover {
+  background-color: hsl(0, 0%, 10%);
+}
